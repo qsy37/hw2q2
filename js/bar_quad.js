@@ -1,11 +1,6 @@
-var outer_width = 550,
-    outer_height = 290,
-	margin = {top: 40, right: 50, bottom: 40, left: 50},
-	padding = {top: 30, right: 30, bottom: 30, left: 30},
-	inner_width = outer_width - margin.left - margin.right,
-	inner_height = outer_height - margin.top - margin.bottom,
-	width = inner_width - padding.left - padding.right,
-	height = inner_height - padding.top - padding.bottom;
+var margin = {top: 50, right: 50, bottom: 50, left: 50},
+	width = 550 - margin.left - margin.right,
+	height = 290 - margin.top - margin.bottom;
 
 var key = function(d) {
 	return d.name;
@@ -14,16 +9,14 @@ var key = function(d) {
 var x = d3.scale.ordinal()
 	.rangeRoundBands([0, width], 0.05);
 	
-var color = d3.scale.category20c();
+var color = d3.scale.category20b();
 	
 var attribute_list = ['msrp', 'engine_size', 'horsepower', 'cmpg'];//['cmpg', 'hmpg']];	
 var svg = {};
 attribute_list.forEach(function(entry) {
 	svg[entry] = d3.select('.' + entry).append('svg')
-		//.attr('viewBox', '0 0 ' + outer_width + ' ' + outer_height)
-		.attr('width', outer_width)
-		.attr('height', outer_height)
-		.attr('preserveAspectRatio', 'xMinYMid')
+		.attr('width', width + margin.left + margin.right)
+		.attr('height', height + margin.top + margin.bottom)
 		.append('g')
 		.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 });
@@ -98,16 +91,4 @@ function wrap(text, width) {
       }
     }
   });
-}
-
-/*var aspect = outer_width/outer_height,
-    chart = d3.selectAll(".vis");
-d3.select(window).on("resize", chart.each(function() {
-    var targetWidth = this.parentNode.offsetWidth;
-    chart.attr("width", targetWidth);
-    chart.attr("height", targetWidth / aspect);
-}));*/
-
-function get_sports_cars(d) {
-	
 }
