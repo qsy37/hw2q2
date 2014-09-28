@@ -1,12 +1,10 @@
-var margin = {top: 50, right: 50, bottom: 50, left: 50},
+var margin = {top: 50, right: 50, bottom: 70, left: 50},
 	width = 500 - margin.left - margin.right,
 	height = 400 - margin.top - margin.bottom;
 
 var key = function(d) {
 	return d.name;
 }
-
-//test add
 
 var x = d3.scale.ordinal()
 	.rangeRoundBands([0, width], 0.2);	
@@ -32,7 +30,7 @@ var yAxis = d3.svg.axis()
     .orient("left")	
 
 var color = d3.scale.ordinal()
-		.range(['#006ba4', '#ff800e', '#ababab', '#595959', '#5f9ed1']);
+		.range(['#006ba4', '#ff800e', '#ababab', '#5f9ed1', '#595959']);
 	
 var mpg_svg = d3.select('.mpg').append('svg')
 		.attr('width', width + margin.left + margin.right + 300)
@@ -40,7 +38,7 @@ var mpg_svg = d3.select('.mpg').append('svg')
 		.append('g')
 		.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 	
-var attribute_list = ['msrp', 'engine_size', 'horsepower'];//, 'mpg'];
+var attribute_list = ['msrp', 'engine_size', 'horsepower'];
 var svg = {};
 attribute_list.forEach(function(entry) {
 	svg[entry] = d3.select('.' + entry).append('svg')
@@ -106,7 +104,7 @@ function build_grouped_bars() {
 		d.cars = data.map(function(car) { return {name: car.name, value: +car[d.name]}; }); 
 	});
 		
-		x0.domain(keys);//mpg.map(function(d) { return d.name; }));
+		x0.domain(keys);
 		x1.domain(data.map(key)).rangeRoundBands([0, x0.rangeBand()], 0.2);
 				
 		y.domain([0, d3.max(mpg, function(d) { return d3.max(d.cars, function(d) { return d.value; }); })]);
