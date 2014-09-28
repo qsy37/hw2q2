@@ -19,20 +19,18 @@
 			fill: #fff;
 		}
 		
-		g.y-axis path,
-		g.y-axis line {
+		.axis path,
+		.axis line {
 			fill: none;
 			stroke: black;
 			shape-rendering: crispEdges;
 		}
 		
-		g.x-axis path,
-		g.x-axis line {
-			fill: none;
-			shape-rendering: crispEdges;
+		.x.axis path {
+			display: none;
 		}
 		
-		g.axis text {
+		.axis text {
 			font: 11px sans-serif;
 		}
 		
@@ -46,24 +44,25 @@
 			min-width: 380px;
 		}
 		
+		
 	</style>
 
   </head>
   <body>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-xs-6 msrp vis"><h2>Price (USD)</h2>
+			<div class="col-xs-5 msrp vis"><h2>Price (USD)</h2>
 			</div>
-			<div class="col-xs-6 engine_size vis"><h2>Engine Size (L)</h2>
+			<div class="col-xs-7 engine_size vis"><h2>Engine Size (L)</h2>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-xs-6 horsepower vis"><h2>Horsepower</h2>
+			<div class="col-xs-5 horsepower vis"><h2>Horsepower</h2>
 			</div>
-			<div class="col-xs-6 cmpg vis"><h2>MPG (city)</h2>
+			<div class="col-xs-7 mpg vis"><h2>Miles Per Gallon</h2>
 			</div>
 		</div>
 	</div>
-	<script src='js/bar_quad.js'></script>
+	<script src='js/grouped_bars.js'></script>
   </body>
 </html>
