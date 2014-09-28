@@ -6,6 +6,8 @@ var key = function(d) {
 	return d.name;
 }
 
+//test add
+
 var x = d3.scale.ordinal()
 	.rangeRoundBands([0, width], 0.2);	
 	
