@@ -7,10 +7,10 @@ var key = function(d) {
 }
 
 var x = d3.scale.ordinal()
-	.rangeRoundBands([0, width], 0.2);	
+	.rangeRoundBands([0, width], 0.3);	
 	
 var x0 = d3.scale.ordinal()
-	.rangeRoundBands([0, width], 0.1);
+	.rangeRoundBands([0, width], 0.05);
 
 var x1 = d3.scale.ordinal();
 
@@ -19,15 +19,15 @@ var y = d3.scale.linear()
 	
 var xAxis = d3.svg.axis()
 		.scale(x)
-		.orient('bottom')	
+		.orient('bottom');	
 		
 var grouped_xAxis = d3.svg.axis()
 		.scale(x0)
-		.orient('bottom')	
+		.orient('bottom');	
 	
 var yAxis = d3.svg.axis()
     .scale(y)
-    .orient("left")	
+    .orient("left");
 
 var color = d3.scale.ordinal()
 		.range(['#006ba4', '#ff800e', '#ababab', '#5f9ed1', '#595959']);
@@ -107,7 +107,9 @@ function build_grouped_bars() {
 		x0.domain(keys);
 		x1.domain(data.map(key)).rangeRoundBands([0, x0.rangeBand()], 0.2);
 				
-		y.domain([0, d3.max(mpg, function(d) { return d3.max(d.cars, function(d) { return d.value; }); })]);
+		y.domain([0, Math.ceil(d3.max(mpg, function(d) { return d3.max(d.cars, function(d) { return d.value; }); })/5)*5]);
+		
+		yAxis.tickValues([0, 5, 10, 15, 20, 25, 30]);
 		
 		mpg_svg.append("g")
 				.attr("class", "x axis")
