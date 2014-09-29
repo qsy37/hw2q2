@@ -137,13 +137,14 @@ function build_grouped_bars() {
 				.data(data.map(key))
 			.enter().append('g')
 				.attr('class', 'legend')
-				.attr('transform', function(d, i) { return 'translate(200,' + i*20 + ')'; });
+				.attr('transform', function(d, i) { return 'translate(200,' + i*22 + ')'; });
 				
 		legend.append('rect')
 			.attr('x', width - 18)
 			.attr('width', 18)
 			.attr('height', 18)
-			.style('fill', color);
+			.style('fill', color)
+			.style('stroke', 'none');
 			
 		legend.append('text')
 			.attr('x', width - 24)
