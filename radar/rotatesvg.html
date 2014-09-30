@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+  <title>Below the Radar</title>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+	<style>
+		body {
+		  overflow: hidden;
+		  margin: 0;
+		  font-size: 14px;
+		  font-family: "Helvetica Neue", Helvetica;
+		}
+
+		#chart {
+		  position: absolute;
+		  top: 50px;
+		  left: 100px;
+		}	
+		
+		svg {
+			border: 1px solid #000;
+			overflow: visible;
+		}
+		.box {
+			margin: 20px 20px;
+		}
+	</style>
+  </head>
+  <body>
+	<div class="box">
+		<svg width="200" height="200">
+			<line x1="0" y1="0" 
+			x2="200" y2="0" 
+			style="stroke:#000;stroke-width:2"
+			transform=' translate(100, 100) rotate(-45 0 0)'/>
+			
+			
+			<line x1="100" y1="0" 
+			x2="100" y2="200" 
+			style="stroke:rgb(255,0,0);stroke-width:1"/>
+			
+			
+			<line x1="0" y1="100" 
+			x2="200" y2="100" 
+			style="stroke:rgb(255,0,0);stroke-width:1"/>
+		</svg>
+		
+	</div>
+  </body>
+</html>
