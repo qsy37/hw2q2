@@ -51,7 +51,7 @@
 		num_attributes = 5,
 		radius = factor*Math.min(width/2, height/2);//Math.sqrt(width*width/4 + height*height/4);
 		
-		var theta = 360/5;
+		var theta = 360/num_attributes;
 		
 		var svg = d3.select('.vis').append('svg')
 			.attr('width', width)
@@ -67,28 +67,23 @@
 				.style("stroke", "black")
 				.style("stroke-opacity", "0.75")
 				.style("stroke-width", "1px");
-				
+			
+			var length = 50;
 			svg.append('svg:circle')
-				.attr('cx', width/2)
-				.attr('cy', height/2 - 100)
+				.attr('cx', width/2*(1-Math.sin(j*radians/num_attributes)))
+				.attr('cy', height/2 *(1 - length/height*Math.cos(j*radians/num_attributes)))
 				.attr('r', 5)
-				.attr('fill', 'orange')
-				.attr('transform', 'rotate(' + j*theta +' 150 150)');
+				.attr('fill', 'orange');
+				//.attr('transform', 'rotate(' + j*theta +' 150 150)');
+			
+			var pts = []
+			
+			for (var i = 0; i < 5; i++ ) {
+			
+			}
 		
 		}
 		
-		svg.append('svg:circle')
-			.attr('cx', width/2)
-			.attr('cy', height/2 - 100)
-			.attr('r', 5)
-			.attr('fill', 'orange');
-			
-			svg.append('svg:circle')
-			.attr('cx', width/2)
-			.attr('cy', height/2 - 100)
-			.attr('r', 5)
-			.attr('fill', 'orange')
-			.attr('transform', 'rotate(' + theta +' 150 150)');
 		
 			
 	/*	var y = d3.scale.linear()

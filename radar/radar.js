@@ -152,6 +152,7 @@ var RadarChart = {
 
 
 	d.forEach(function(y, x){
+	console.log(y);
 	  g.selectAll(".nodes")
 		.data(y).enter()
 		.append("svg:circle")
