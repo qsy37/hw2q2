@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
   <title>Below the Radar</title>
-    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="lib/d3.v3.min.js"></script>
 	<style>
 		body {
 		  overflow: hidden;
@@ -19,12 +19,12 @@
 		}	
 		
 		svg {
-			border: 1px solid #000;
+			
 			overflow: visible;
 		}
 		
 		.vis {
-			margin: 20px 20px;
+			margin: 150px 150px;
 		}
 		
 		.axis path,
@@ -41,68 +41,6 @@
   </head>
   <body>
 	<div class="vis"></div>
-    <script type="text/javascript">
-		var margin = {left: 40, right: 40, top: 40, bottom: 40},
-		width = 300,
-		height = 300,
-		axis_length = 100,
-		factor = 1,
-		radians = 2*Math.PI,
-		num_attributes = 5,
-		radius = factor*Math.min(width/2, height/2);//Math.sqrt(width*width/4 + height*height/4);
-		
-		var theta = 360/num_attributes;
-		
-		var svg = d3.select('.vis').append('svg')
-			.attr('width', width)
-			.attr('height', height)
-		
-		for (var j = 0; j < 5; j++ ) {
-			console.log(theta, j*theta);
-			svg.append('svg:line')
-				.attr('x1', width/2)
-				.attr('y1', height/2)
-				.attr('x2', width/2*(1-Math.sin(j*radians/num_attributes)))
-				.attr('y2', height/2*(1-Math.cos(j*radians/num_attributes)))
-				.style("stroke", "black")
-				.style("stroke-opacity", "0.75")
-				.style("stroke-width", "1px");
-			
-			var length = 50;
-			svg.append('svg:circle')
-				.attr('cx', width/2*(1-Math.sin(j*radians/num_attributes)))
-				.attr('cy', height/2 *(1 - length/height*Math.cos(j*radians/num_attributes)))
-				.attr('r', 5)
-				.attr('fill', 'orange');
-				//.attr('transform', 'rotate(' + j*theta +' 150 150)');
-			
-			var pts = []
-			
-			for (var i = 0; i < 5; i++ ) {
-			
-			}
-		
-		}
-		
-		
-			
-	/*	var y = d3.scale.linear()
-			.domain([0, 1])
-			.range([0, axis_length]);
-		
-		'translate(100, 100) rotate(-45 0 0)'
-		
-		var axis = d3.svg.axis()
-			.scale(y)
-			.orient('bottom')
-			.ticks(0);
-			
-		var gAxis = g.append('g')
-			.attr('class', 'axis')
-			.call(axis);
-	*/			
-	
-	</script>
-
+    <script src="radar_chart.js"></script>
   </body>
 </html>

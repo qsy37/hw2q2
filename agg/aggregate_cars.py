@@ -2,7 +2,7 @@ import json, utils
 import sqlite3 as lite
 from json_decoder import _decode_dict
 
-js = open('data/cars.json')
+js = open('../data/cars.json')
 data = json.load(js, object_hook=_decode_dict)
 
 cars = []
@@ -44,3 +44,7 @@ with con:
 	cur.executemany("INSERT INTO cars VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", car_list)
 	
 con.commit()
+f = open('cars.sql')
+sql = f.read()
+cur = con.cursor()
+cur.executescript(sql)
