@@ -13,17 +13,36 @@ var svg = d3.select('.vis').append('svg')
 	.attr('height', height)
 	.append('g');
 
-for (var j = 0; j < num_attributes; j++ ) {
+var axis_labels = ['Price', 'Engine Size', 'Horsepower', 'City MPG', 'Highway MPG'];	
+
+axis_labels.forEach(function(d, j) {
 	svg.append('svg:line')
 		.attr('x1', width/2)
 		.attr('y1', height/2)
-		.attr('x2', width/2*(1-Math.sin(j*radians/num_attributes)))
-		.attr('y2', height/2*(1-Math.cos(j*radians/num_attributes)))
+		.attr('x2', width/2*(1-Math.sin(radians*j/num_attributes)))
+		.attr('y2', height/2*(1-Math.cos(radians*j/num_attributes)))
 		.style("stroke", "black")
 		.style("stroke-opacity", "0.75")
 		.style("stroke-width", "1px");
-}
+});
 
+var axis = svg.selectAll('.axis')
+	.data(['Price', 'Engine Size', 'Horsepower', 'City MPG', 'Highway MPG'])
+	.enter()
+	.append('g')
+	.attr('class', 'axis')
+	.append('text')
+	.attr('x', function(d, j) { return width/2*(1-Math.sin(radians*j/num_attributes)); })
+	.attr('y', function(d, j) { 
+		if (height/2*(1-Math.cos(radians*j/num_attributes)) < height/2) {
+			return height/2*(1-Math.cos(radians*j/num_attributes)) - 15; }
+		else {
+			return height/2*(1-Math.cos(radians*j/num_attributes)) + 15;
+		} })
+	.attr('dy', '.35em')
+	.style('text-anchor', 'middle')
+	.text(function(d) { return d; });
+	
 var price_y = d3.scale.linear()
 	.range([0, axis_length]);
 var engine_y = d3.scale.linear()
@@ -47,13 +66,14 @@ var tip = d3.tip()
 
 d3.json('manu.json', function(error, data) {
 	
-	price_y.domain([0,d3.max(data, function(d) { return +d.msrp; })]);
-	engine_y.domain([0,d3.max(data, function(d) { return +d.engine_size; })]);
-	horsepower_y.domain([0,d3.max(data, function(d) { return +d.horsepower; })]);
-	cmpg_y.domain([0,d3.max(data, function(d) { return +d.cmpg; })]);
-	hmpg_y.domain([0,d3.max(data, function(d) { return +d.hmpg; })]);
-	data = data.slice(34, 39);
-	dataset = [];	
+	price_y.domain(d3.extent(data, function(d) { return +d.msrp; }));
+	engine_y.domain(d3.extent(data, function(d) { return +d.engine_size; }));
+	horsepower_y.domain(d3.extent(data, function(d) { return +d.horsepower; }));
+	cmpg_y.domain(d3.extent(data, function(d) { return +d.cmpg; }));
+	hmpg_y.domain(d3.extent(data, function(d) { return +d.hmpg; }));
+	data = [data[1], data[15], data[21], data[24], data[31]];//data.slice(18, 23);
+	var dataset = [],
+		manufacturers = [];
 	console.log(data);
 	data.forEach(function(d) {
 		dataset.push([{name: 'msrp', value: price_y(+d.msrp)},
@@ -61,7 +81,7 @@ d3.json('manu.json', function(error, data) {
 					  {name: 'horsepower', value: horsepower_y(+d.horsepower)},
 					  {name: 'cmpg', value: cmpg_y(+d.cmpg)},
 					  {name: 'hmpg', value: hmpg_y(+d.hmpg)}]);
-		
+		manufacturers.push(d.manufacturer);		
 	});
 	
 	var pts = {};
@@ -85,11 +105,11 @@ d3.json('manu.json', function(error, data) {
 		.append('svg:circle')
 		.attr('class', 'node')
 		.attr('cx', function(d, j) { 
-			pts[d.k].push([width/2*(1 - d.value/height*Math.sin(j*radians/num_attributes)),
-				 height/2 *(1 - d.value/height*Math.cos(j*radians/num_attributes))]);
-			return width/2*(1 - d.value/height*Math.sin(j*radians/num_attributes)); })
+			pts[d.k].push([width/2*(1 - d.value/height*Math.sin(radians*j/num_attributes)),
+				 height/2 *(1 - d.value/height*Math.cos(radians*j/num_attributes))]);
+			return width/2*(1 - d.value/height*Math.sin(radians*j/num_attributes)); })
 		.attr('cy', function(d, j) { 
-			return height/2 *(1 - d.value/height*Math.cos(j*radians/num_attributes)); })
+			return height/2 *(1 - d.value/height*Math.cos(radians*j/num_attributes)); })
 		.attr('r', 5)
 		.attr('fill', function(d) { return color(d.k); });
 
@@ -116,23 +136,58 @@ d3.json('manu.json', function(error, data) {
 		.style('stroke', function(d, k) { return color(k); })
 		.style('stroke-width', '0.5px')
 		.style('fill', function(d, k) { return color(k); })
-		.style('fill-opacity', 0.25)
+		.style('fill-opacity', 0.03)
 		.on('mouseover', function (d){
 			z = "polygon."+d3.select(this).attr("class");
 			manufacturer.selectAll("polygon")
 			 .transition(200)
-			 .style("fill-opacity", 0.05); 
+			 .style("fill-opacity", 0.03); 
 			manufacturer.selectAll(z)
 			 .transition(200)
-			 .style("fill-opacity", .75);
+			 .style("fill-opacity", .25);
 		})
 		.on('mouseout', function(){
 			manufacturer.selectAll("polygon")
 			 .transition(200)
-			 .style("fill-opacity", 0.25);
+			 .style("fill-opacity", 0.03);
 		});
 		
-	//manufacturer.selectAll('polygon')
+	var legend = svg.selectAll('.legend')
+		.data(manufacturers)
+		.enter()
+		.append('g')
+		.attr('class', 'legend')
+		.attr('transform', 'translate(80, 0)');
+		
+	legend.append('rect')
+		.attr('x', width - 18)
+		.attr('y', function(d, i) { return i*22; })
+		.attr('width', 20)
+		.attr('height', 20)
+		.style('fill', function(d, i) { return color(i); })
+		.style('stroke', 'none');
+		
+	legend.append('text')
+		.attr('x', width - 24)
+		.attr('y', function(d, i) { return i*22 + 9; })
+		.attr('dy', '.35em')
+		.style('text-anchor', 'end')
+		.text(function(d) { return d; });
+		
+	legend.on('mouseover', function(d, i) {
+		z = 'polygon.radar-chart-item-' + i;
+		manufacturer.selectAll('polygon')
+			.transition(200)
+			.style('fill-opacity', 0.03);
+		manufacturer.selectAll(z)
+			.transition(200)
+			.style('fill-opacity', 0.25);
+		})
+		.on('mouseout', function() {
+			manufacturer.selectAll('polygon')
+				.transition(200)
+				.style('fill-opacity', 0.03);
+		});
 		
 
 });
