@@ -32,6 +32,7 @@ var axis = svg.selectAll('.axis')
 	.append('g')
 	.attr('class', 'axis')
 	.append('text')
+	.attr('class', function(d, j) { return 'axis-text-item-'+j; })
 	.attr('x', function(d, j) { return width/2*(1-Math.sin(radians*j/num_attributes)); })
 	.attr('y', function(d, j) { 
 		if (height/2*(1-Math.cos(radians*j/num_attributes)) < height/2) {
@@ -66,15 +67,15 @@ var tip = d3.tip()
 
 d3.json('manu.json', function(error, data) {
 	
-	price_y.domain(d3.extent(data, function(d) { return +d.msrp; }));
-	engine_y.domain(d3.extent(data, function(d) { return +d.engine_size; }));
-	horsepower_y.domain(d3.extent(data, function(d) { return +d.horsepower; }));
-	cmpg_y.domain(d3.extent(data, function(d) { return +d.cmpg; }));
-	hmpg_y.domain(d3.extent(data, function(d) { return +d.hmpg; }));
+	price_y.domain([0, d3.max(data, function(d) { return +d.msrp; })]);
+	engine_y.domain([0, d3.max(data, function(d) { return +d.engine_size; })]);
+	horsepower_y.domain([0, d3.max(data, function(d) { return +d.horsepower; })]);
+	cmpg_y.domain([0, d3.max(data, function(d) { return +d.cmpg; })]);
+	hmpg_y.domain([0, d3.max(data, function(d) { return +d.hmpg; })]);
 	data = [data[1], data[15], data[21], data[24], data[31]];//data.slice(18, 23);
 	var dataset = [],
-		manufacturers = [];
-	console.log(data);
+		manufacturers = [],
+		attr_list = ['msrp', 'engine_size', 'horsepower', 'cmpg', 'hmpg'];
 	data.forEach(function(d) {
 		dataset.push([{name: 'msrp', value: price_y(+d.msrp)},
 					  {name: 'engine_size', value: engine_y(+d.engine_size)},
@@ -117,6 +118,7 @@ d3.json('manu.json', function(error, data) {
 	for (var k = 0; k < num_attributes; k++) {
 		poly_pts.push(pts[k]);
 	}
+	
 	var poly = manufacturer.selectAll('.poly')
 		.data(poly_pts)
 		.enter()
@@ -173,7 +175,6 @@ d3.json('manu.json', function(error, data) {
 		.attr('dy', '.35em')
 		.style('text-anchor', 'end')
 		.text(function(d) { return d; });
-		
 	legend.on('mouseover', function(d, i) {
 		z = 'polygon.radar-chart-item-' + i;
 		manufacturer.selectAll('polygon')
